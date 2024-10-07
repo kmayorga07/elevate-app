@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elevation Finder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        label, input, button {
+            display: block;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <h1>Find Elevation</h1>
+    <label for="address">Enter Address:</label>
+    <input type="text" id="address" placeholder="Enter address here">
+    <button onclick="getElevation()">Get Elevation</button>
+
+    <h2>Elevation Result:</h2>
+    <p id="result">Enter an address to get the elevation above sea level.</p>
+
+    <script>
+        function getElevation() {
+            const address = document.getElementById('address').value;
+
+            fetch('/get_elevation', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ address: address })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.error) {
+                    document.getElementById('result').textContent = data.error;
+                } else {
+                    document.getElementById('result').textContent = 'Elevation: ' + data.elevation + ' feet';
+                }
+            })
+            .catch(error => {
+                document.getElementById('result').textContent = 'Error fetching elevation data.';
+            });
+        }
+    </script>
+</body>
+</html>
